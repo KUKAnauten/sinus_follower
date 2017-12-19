@@ -14,7 +14,7 @@
  *     copyright notice, this list of conditions and the following
  *     disclaimer in the documentation and/or other materials provided
  *     with the distribution.
- *   * Neither the name of SRI International nor the names of its
+ *   * Neither the name of the author nor the names of its
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -66,16 +66,7 @@ public:
   void publishYGoal(double addition, double duration) {
     geometry_msgs::Pose target_pose = base_pose_;
     target_pose.position.y += addition;
-    robot_state_.setFromIK(joint_model_group_, target_pose);
-    trajectory_msgs::JointTrajectoryPoint  trajectory_point;
-    robot_state_.copyJointGroupPositions(joint_model_group_, trajectory_point.positions);
-    trajectory_point.time_from_start = ros::Duration(duration);
-
-    trajectory_msgs::JointTrajectory single_point_trajectory;
-    single_point_trajectory.joint_names = joint_names_;
-    single_point_trajectory.points.push_back(trajectory_point);
-
-    trajectory_publisher_.publish(single_point_trajectory);
+    publishPoseGoal(target_pose, duration);
   }
 
 private:
